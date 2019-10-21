@@ -37,7 +37,7 @@ describe OysterCard do
       
       subject.top_up(5)
       subject.touch_in(station)
-      expect(subject.start_station).to be(station)
+      expect(subject.entry_station).to be(station)
     end
 
     it "should be able to touch out during travel" do
