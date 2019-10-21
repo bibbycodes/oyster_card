@@ -2,11 +2,12 @@ class OysterCard
   MAX_BALANCE = 90
   MIN_FARE = 1
 
-  attr_reader :balance, :MIN_FARE, :entry_station
+  attr_reader :balance, :MIN_FARE, :entry_station, :last_journey
 
   def initialize(balance = 0)
     @balance = balance
     @entry_station = nil
+    @last_journey = Hash.new
   end
 
   def top_up(amount)
@@ -19,8 +20,12 @@ class OysterCard
     @entry_station = entry_station
   end
 
-  def touch_out
+  def touch_out(destination)
     deduct
+    @last_journey = {
+      :origin => @entry_station,
+      :destination => destination
+    }
     @entry_station = nil
   end
 
