@@ -19,6 +19,16 @@ describe OysterCard do
       subject.deduct(10)
       expect(subject.balance).to eq(-10)
     end
+
+    it "should be able to touch in during travel" do
+      subject.touch_in
+      expect(subject.in_journey?).to be(true)
+    end
+
+    it "should be able to touch out during travel" do
+      subject.touch_out
+      expect(subject.in_journey?).to be(false)
+    end
   end
 end
 
