@@ -3,6 +3,7 @@ require 'oyster_card'
 describe OysterCard do
   let (:station) {double (:station)}
   let (:destination) {double (:destination)}
+
   context "When using the OysterCard Class" do
 
     context "Balance" do
@@ -32,12 +33,6 @@ describe OysterCard do
 
     context "Touching In" do
 
-      it "checks for journey history" do
-        # subject.top_up(5)
-        # subject.touch_in(station)
-        expect(subject.last_journey).to eq({})
-      end
-
       it "should deduct the cost of a journey after touching out" do
         subject.top_up(5)
         subject.touch_in(station)
@@ -64,8 +59,8 @@ describe OysterCard do
         subject.top_up(5)
         subject.touch_in(station)
         subject.touch_out(destination)
-        expect(subject.last_journey[:destination]).to eq(destination)
-        expect(subject.last_journey[:origin]).to eq(station)
+        expect(subject.current_journey.destination).to be(destination)
+        expect(subject.current_journey.origin).to be(station)
       end
 
       it "should be able to touch out during travel" do
@@ -79,13 +74,14 @@ describe OysterCard do
         subject.touch_out(destination)
         expect(subject.entry_station).to be(nil)
       end
+
     end
 
     it "should save the journey history" do
       subject.top_up(5)
       subject.touch_in(station)
       subject.touch_out(destination)
-      expect(subject.journey_history).to include(subject.last_journey)
+      expect(subject.journey_history).to include(subject.current_journey)
     end
   end
 end
