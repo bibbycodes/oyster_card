@@ -15,11 +15,6 @@ describe OysterCard do
       expect{ subject.top_up(91) }.to raise_error "The maximum balance for an oyster card is £90"
     end
 
-    it "should deduct from balance when card is used" do
-      subject.deduct(10)
-      expect(subject.balance).to eq(-10)
-    end
-
     it "should be able to touch in during travel" do
       subject.top_up(5)
       subject.touch_in
@@ -33,11 +28,17 @@ describe OysterCard do
 
     it "should check if the balance is above the minimum" do
       subject.top_up(0.5)
-      expect(subject.above_minimum?).to eq(false)
+      expect(subject.sufficient_funds?).to eq(false)
     end
 
     it "should raise an error if balance is less than minimum amount" do
       expect{subject.touch_in}.to raise_error "Insufficient funds!"
+    end
+
+    it "should deduct the cost of a journey after touching out" do
+      subject.top_up(5)
+      subject.touch_in
+      expect {subject.touch_out}.to change{subject.balance}.by(-1)
     end
   end
 end
