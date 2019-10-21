@@ -1,6 +1,7 @@
 require 'oyster_card'
 
 describe OysterCard do
+  let (:station) {double (:station)}
   context "When using the OysterCard Class" do
     it "should have a balance of zero by default" do
       expect(subject.balance).to eq(0)
@@ -15,31 +16,39 @@ describe OysterCard do
       expect{ subject.top_up(91) }.to raise_error "The maximum balance for an oyster card is £90"
     end
 
-    it "should be able to touch in during travel" do
-      subject.top_up(5)
-      subject.touch_in
-      expect(subject.in_journey?).to be(true)
-    end
-
-    it "should be able to touch out during travel" do
-      subject.touch_out
-      expect(subject.in_journey?).to be(false)
-    end
-
     it "should check if the balance is above the minimum" do
       subject.top_up(0.5)
       expect(subject.sufficient_funds?).to eq(false)
     end
 
-    it "should raise an error if balance is less than minimum amount" do
-      expect{subject.touch_in}.to raise_error "Insufficient funds!"
-    end
-
     it "should deduct the cost of a journey after touching out" do
       subject.top_up(5)
-      subject.touch_in
+      subject.touch_in(station)
       expect {subject.touch_out}.to change{subject.balance}.by(-1)
     end
+
+    it "should be able to touch in during travel" do
+      subject.top_up(5)
+      subject.touch_in(station)
+      expect(subject.in_journey?).to be(true)
+    end
+
+    it "should register the station when touching in" do
+      
+      subject.top_up(5)
+      subject.touch_in(station)
+      expect(subject.start_station).to be(station)
+    end
+
+    it "should be able to touch out during travel" do
+      subject.touch_out()
+      expect(subject.in_journey?).to be(false)
+    end
+
+    it "should raise an error if balance is less than minimum amount" do
+      expect{subject.touch_in(station)}.to raise_error "Insufficient funds!"
+    end
+
   end
 end
 
