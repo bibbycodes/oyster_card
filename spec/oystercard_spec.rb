@@ -80,6 +80,13 @@ describe OysterCard do
         expect(subject.entry_station).to be(nil)
       end
     end
+
+    it "should save the journey history" do
+      subject.top_up(5)
+      subject.touch_in(station)
+      subject.touch_out(destination)
+      expect(subject.journey_history).to include(subject.last_journey)
+    end
   end
 end
 
