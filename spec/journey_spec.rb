@@ -14,5 +14,12 @@ describe Journey do
       subject.add_destination(destination)
       expect(subject.destination).to be(destination)
     end
+
+    it "should return the minimum fare when calculating the fare" do
+      subject.add_origin(origin)
+      subject.add_destination(destination)
+
+      expect(subject.calculate_fare).to eq(1)
+    end
   end
 end
