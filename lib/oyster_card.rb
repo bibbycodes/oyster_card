@@ -27,7 +27,6 @@ class OysterCard
   def touch_out(exit_station)
     deduct(1)
     @current_journey.add_destination(exit_station)
-    @current_journey.end_journey
     save_journey(@current_journey)
   end
 

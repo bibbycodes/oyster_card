@@ -1,15 +1,20 @@
 require_relative "station"
 
 class Journey
-  attr_reader :destination, :origin
+  MINIMUM_FARE = 1
+  PENALTY_FARE = 6
+
+  attr_reader :destination, :origin, :PENALTY_FARE, :fare
+  
   def initialize
-    @origin = Station.new
-    @destination = Station.new
+    @origin = ""
+    @destination = ""
     @complete = false
+    @fare = PENALTY_FARE
   end
 
   def calculate_fare
-    return 1
+    @fare = self.complete? ? MINIMUM_FARE : PENALTY_FARE
   end
 
   def add_origin(station)
@@ -21,10 +26,10 @@ class Journey
   end
 
   def end_journey
-    @complete = true
+    return self
   end
 
   def complete?
-    return @complete
+    @complete = (@origin != "" && @destination != "") ? true : false
   end
 end
